@@ -1,0 +1,36 @@
+apiVersion: v1
+kind: ConfigMap
+  name: aws-auth
+  namespace: kube-system
+data:
+  mapRoles: |
+    - groups:
+      - system:bootstrappers
+      - system:nodes
+      rolearn: arn:aws:iam::<AWS_ACCOUNT_ID>:role/paocloud-eks-nodes-group
+      username: system:node:{{EC2PrivateDNSName}}
+    - groups:
+      - system:bootstrappers
+      - system:nodes
+      - system:masters
+      rolearn: arn:aws:iam::<AWS_ACCOUNT_ID>:role/allowPAOAccount
+      username: payungsak.k@paocloud.co.th
+  mapUsers: |
+    - groups:
+      - system:masters
+      - system:nodes
+      - system:bootstrappers
+      userarn: arn:aws:iam::<AWS_ACCOUNT_ID>:user/kubectl
+      username: kubectl
+    - groups:
+      - system:masters
+      - system:nodes
+      - system:bootstrappers
+      userarn: arn:aws:iam::<AWS_ACCOUNT_ID>:user/gitlab
+      username: gitlab
+    - groups:
+      - system:masters
+      - system:nodes
+      - system:bootstrappers
+      userarn: arn:aws:iam::<AWS_ACCOUNT_ID>:user/pao
+      username: pao
